@@ -127,6 +127,13 @@
                     resultText.className = resultClass;
                     resultDisplay.classList.remove('d-none');
                     
+                    // Show the correct side of the coin based on result
+                    if (data.result === 'heads') {
+                        coin.style.transform = 'rotateY(0deg)';
+                    } else {
+                        coin.style.transform = 'rotateY(180deg)';
+                    }
+                    
                     // Update balance in navbar
                     document.querySelectorAll('.navbar .nav-link').forEach(el => {
                         if (el.textContent.includes('Balance')) {
@@ -151,11 +158,13 @@
                     
                     betsTableBody.prepend(newRow);
                     
-                    // Reset UI for next bet
-                    isBetting = false;
-                    btnHeads.disabled = false;
-                    btnTails.disabled = false;
-                    coin.classList.remove('flip');
+                    // Reset UI for next bet after a short delay
+                    setTimeout(() => {
+                        isBetting = false;
+                        btnHeads.disabled = false;
+                        btnTails.disabled = false;
+                        coin.classList.remove('flip');
+                    }, 1500);
                 }, 3000);
             })
             .catch(error => {
