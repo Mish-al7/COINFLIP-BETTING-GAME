@@ -9,9 +9,12 @@
                 <h2 class="text-center">Coin Flip Game</h2>
             </div>
             <div class="card-body text-center">
-                <div class="coin" id="coin">
-                    <div class="coin-heads">H</div>
-                    <div class="coin-tails">T</div>
+                <div class="position-relative">
+                    <div class="coin" id="coin">
+                        <div class="coin-heads">H</div>
+                        <div class="coin-tails">T</div>
+                    </div>
+                    <div class="coin-shadow"></div>
                 </div>
                 
                 <div id="result-display" class="my-3 d-none">
@@ -157,7 +160,19 @@
                     `;
                     
                     betsTableBody.prepend(newRow);
-                    
+                    setTimeout(() => {
+                // Force the coin to its final state before updating UI
+                coin.classList.remove('flip');
+                
+                // Set the final state based on result
+                if (data.result === 'heads') {
+                    coin.style.transform = 'rotateY(0deg)';
+                } else {
+                    coin.style.transform = 'rotateY(180deg)';
+                }
+                
+                // Existing code to update UI...
+            }, 2400); // Slightly before the animation ends
                     // Reset UI for next bet after a short delay
                     setTimeout(() => {
                         isBetting = false;
@@ -165,7 +180,7 @@
                         btnTails.disabled = false;
                         coin.classList.remove('flip');
                     }, 1500);
-                }, 3000);
+                }, 2500);
             })
             .catch(error => {
                 console.error('Error:', error);

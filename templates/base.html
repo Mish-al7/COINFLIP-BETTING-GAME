@@ -25,6 +25,9 @@
             transform-style: preserve-3d;
             position: relative;
             transition: transform 0.6s ease;
+            will-change: transform;
+            backface-visibility: hidden;
+            transform: translateZ(0);
         }
         .coin-heads, .coin-tails {
             position: absolute;
@@ -47,14 +50,23 @@
             transform: rotateY(180deg);
         }
         .flip {
-            animation: flip-coin 3s forwards;
+            animation: flip-coin 2.5s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
         }
         @keyframes flip-coin {
             0% {
-                transform: rotateY(0);
+                transform: rotateY(0) translateZ(0);
+            }
+            40% {
+                transform: rotateY(900deg) translateZ(0);
+            }
+            70% {
+                transform: rotateY(1600deg) translateZ(0);
+            }
+            85% {
+                transform: rotateY(1750deg) translateZ(0);
             }
             100% {
-                transform: rotateY(1800deg);
+                transform: rotateY(1800deg) translateZ(0);
             }
         }
         .btn-primary {
@@ -76,6 +88,36 @@
         .result-loss {
             color: #e94560;
             font-weight: bold;
+        }
+        .coin-shadow {
+            position: absolute;
+            width: 140px;
+            height: 20px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 50%;
+            bottom: -30px;
+            left: calc(50% - 70px);
+            filter: blur(5px);
+            z-index: -1;
+        }
+
+        .flip ~ .coin-shadow {
+            animation: shadow-animation 3s ease-in-out forwards;
+        }
+
+        @keyframes shadow-animation {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            20%, 40%, 60%, 80% { transform: scale(0.8); opacity: 0.3; }
+            10%, 30%, 50%, 70%, 90% { transform: scale(1.1); opacity: 0.5; }
+        }
+        .position-relative {
+            perspective: 1000px;
+            margin: 50px auto;
+        }
+
+        .coin {
+            transform-style: preserve-3d;
+            transform: rotateX(0deg);
         }
     </style>
 </head>
