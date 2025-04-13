@@ -1,0 +1,67 @@
+<!-- templates/admin.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="text-center">Game Settings</h2>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    <div class="mb-3">
+                        <label for="win_probability" class="form-label">Win Probability (0-1)</label>
+                        <input type="number" step="0.01" min="0" max="1" class="form-control" id="win_probability" name="win_probability" value="{{ config.win_probability }}" required>
+                        <div class="form-text">0.5 is a fair coin, lower values decrease player win chance</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="max_bet" class="form-label">Maximum Bet ($)</label>
+                        <input type="number" step="0.01" min="0.01" class="form-control" id="max_bet" name="max_bet" value="{{ config.max_bet }}" required>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">Update Settings</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="text-center">Platform Statistics</h2>
+            </div>
+            <div class="card-body">
+                <p><strong>Total Users:</strong> {{ total_users }}</p>
+                <p><strong>Total Bets Placed:</strong> {{ total_bets }}</p>
+                <p><strong>House Profit:</strong> ${{ house_profit|round(2) }}</p>
+                <p><strong>Current Win Probability:</strong> {{ (config.win_probability * 100)|round(1) }}%</p>
+                <p><strong>Current Max Bet:</strong> ${{ config.max_bet|round(2) }}</p>
+                <p><strong>Last Settings Update:</strong> {{ config.last_updated.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="text-center">Probability Explainer</h2>
+            </div>
+            <div class="card-body">
+                <p>The win probability setting controls how often players win their bets:</p>
+                <ul>
+                    <li><strong>0.5 (50%):</strong> Fair coin - players win exactly half the time on average</li>
+                    <li><strong>0.4 (40%):</strong> House edge of 20% - players win 40% of bets on average</li>
+                    <li><strong>0.3 (30%):</strong> House edge of 40% - players win 30% of bets on average</li>
+                </ul>
+                <p>For a profitable betting game, set the win probability below 0.5 to create a house edge.</p>
+                <p>The expected house profit can be calculated as: <code>(1 - 2 × Win Probability) × Average Bet Size × Number of Bets</code></p>
+                <div class="alert alert-warning">
+                    <strong>Warning:</strong> Setting extremely low win probabilities may discourage players from betting on your platform. A common house edge in gambling is between 1% and 5%.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
